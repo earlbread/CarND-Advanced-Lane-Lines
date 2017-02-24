@@ -3,7 +3,11 @@ import numpy as np
 
 
 def get_images(files):
-    """Read images using opencv from list of files
+    """Read images using opencv from given a list of files.
+
+    :param files: A list of image file name.
+
+    :return: A list of opencv image array.
     """
     images = []
 
@@ -15,7 +19,13 @@ def get_images(files):
 
 
 def get_calibration_info(images, nx, ny):
-    """Return image points and object point to camera calibration
+    """Find image points and object points from given images.
+
+    :param images: A list of opencv image array.
+    :param nx: The number of corners in row.
+    :param ny: The number of corners in column.
+
+    :return: A tuple of image points and object points
     """
     imgpoints = []  # 2D points in image plane
     objpoints = []  # 3D points in real world space

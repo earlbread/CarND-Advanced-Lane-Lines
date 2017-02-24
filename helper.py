@@ -25,10 +25,10 @@ def get_calibration_info(images, nx, ny):
     :param nx: The number of corners in row.
     :param ny: The number of corners in column.
 
-    :return: A tuple of image points and object points
+    :return: A tuple of object points and image points
     """
-    imgpoints = []  # 2D points in image plane
     objpoints = []  # 3D points in real world space
+    imgpoints = []  # 2D points in image plane
 
     objp = np.zeros((nx * ny, 3), np.float32)
     objp[:, :2] = np.mgrid[0:nx, 0:ny].T.reshape(-1, 2)
@@ -41,4 +41,23 @@ def get_calibration_info(images, nx, ny):
             imgpoints.append(corners)
             objpoints.append(objp)
 
-    return imgpoints, objpoints
+    return objpoints, imgpoints
+
+
+def undistort_image(image, objpoints, imgpoints):
+    """Undistort image.
+
+    :param image: Image to undistort.
+    :param objpoints: 3D Object points in real world space.
+    :param imgpoints: 2D Object points in image plane.
+
+    :return: A undistorted image.
+    """
+    ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints,
+                                                       imgpoints,
+                                                       image.shape[0:2],
+                                                       None, None)
+
+    undist = cv2.undistort(image, mtx, dist, None, mtx)
+
+    return undist

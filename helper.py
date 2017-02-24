@@ -19,13 +19,13 @@ def get_images(files):
 
 
 def get_calibration_info(images, nx, ny):
-    """Find image points and object points from given images.
+    """Find camera matrix and distortion coefficients to undistort image.
 
     :param images: A list of opencv image array.
     :param nx: The number of corners in row.
     :param ny: The number of corners in column.
 
-    :return: A tuple of object points and image points
+    :return: A tuple of camera matrix and distortion coefficients.
     """
     objpoints = []  # 3D points in real world space
     imgpoints = []  # 2D points in image plane
@@ -41,23 +41,24 @@ def get_calibration_info(images, nx, ny):
             imgpoints.append(corners)
             objpoints.append(objp)
 
-    return objpoints, imgpoints
+    # ret, rvecs and tvecs are not used.
+    ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints,
+                                                       imgpoints,
+                                                       gray.shape[::-1],
+                                                       None, None)
+
+    return mtx, dist
 
 
-def undistort_image(image, objpoints, imgpoints):
+def undistort_image(image, mtx, dist):
     """Undistort image.
 
     :param image: Image to undistort.
-    :param objpoints: 3D Object points in real world space.
-    :param imgpoints: 2D Object points in image plane.
+    :param mtx: Camera matrix.
+    :param dist: Distortion coefficients.
 
     :return: A undistorted image.
     """
-    ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints,
-                                                       imgpoints,
-                                                       image.shape[0:2],
-                                                       None, None)
-
     undist = cv2.undistort(image, mtx, dist, None, mtx)
 
     return undist

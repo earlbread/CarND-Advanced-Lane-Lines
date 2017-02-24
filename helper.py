@@ -3,7 +3,7 @@ import numpy as np
 
 
 def get_images(files):
-    """Read images using opencv from given a list of files.
+    """Read images using OpenCV from given a list of files.
 
     :param files: A list of image file name.
 

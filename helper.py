@@ -66,7 +66,7 @@ def undistort_image(image, mtx, dist):
 
 
 def abs_sobel_thresh(image, orient='x', sobel_kernel=3, thresh=(0, 255)):
-    """Generate directional gradient binary image.
+    """Generate a directional gradient binary image.
 
     :param image: An image to generate binary image.
     :param orient: Gradient direction, 'x' or 'y'.
@@ -91,8 +91,14 @@ def abs_sobel_thresh(image, orient='x', sobel_kernel=3, thresh=(0, 255)):
     return grad_binary
 
 def mag_thresh(image, sobel_kernel=3, mag_thresh=(0, 255)):
-    # Calculate gradient magnitude
-    # Apply threshold
+    """Generate the magnitude of the gradient.
+
+    :param image: An image to generate binary image.
+    :param sobel_kernel: Kernel size to apply sobel.
+    :param thresh: Low and high gradient threshold.
+
+    :return: The maginitude of the gradient.
+    """
     gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
     sobelx = cv2.Sobel(gray, cv2.CV_64F, 1, 0, ksize=sobel_kernel)
     sobely = cv2.Sobel(gray, cv2.CV_64F, 0, 1, ksize=sobel_kernel)
@@ -103,8 +109,14 @@ def mag_thresh(image, sobel_kernel=3, mag_thresh=(0, 255)):
     return mag_binary
 
 def dir_threshold(image, sobel_kernel=3, thresh=(0, np.pi/2)):
-    # Calculate gradient direction
-    # Apply threshold
+    """Generate the direction of the gradient.
+
+    :param image: An image to generate binary image.
+    :param sobel_kernel: Kernel size to apply sobel.
+    :param thresh: Low and high gradient threshold.
+
+    :return: The direction of the gradient.
+    """
     gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
 
     abs_sobelx = np.absolute(cv2.Sobel(gray, cv2.CV_64F, 1, 0, ksize=sobel_kernel))

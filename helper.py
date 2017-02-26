@@ -78,7 +78,7 @@ def process_image(image, mtx, dist):
     return image
 
 
-def process_video(video_file, mtx, dist, prefix="precessed_"):
+def process_video(video_filename, mtx, dist, prefix="precessed_"):
     """Process video to identify the lane boundaries.
 
     :param video: Video file name to process.
@@ -87,7 +87,7 @@ def process_video(video_file, mtx, dist, prefix="precessed_"):
     """
     def process_fl(image):
         return process_image(image, mtx, dist)
-    clip = VideoFileClip(video_file)
+    clip = VideoFileClip(video_filename)
     new_clip = clip.fl_image(process_fl)
-    new_filename = prefix + video_file
+    new_filename = prefix + video_filename
     new_clip.write_videofile(new_filename)

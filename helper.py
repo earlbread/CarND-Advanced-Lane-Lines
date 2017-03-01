@@ -157,6 +157,12 @@ def region_of_interest(img, vertices):
 
 
 def perspective_transform(image):
+    """Applies perspective transform.
+
+    :param image: An image to apply perspective transform.
+
+    :return: A warped image.
+    """
     imshape = image.shape
 
     x_left_bottom_src  = imshape[1] * 0.14
@@ -187,9 +193,9 @@ def perspective_transform(image):
 
     M = cv2.getPerspectiveTransform(src, dst)
     img_size = (imshape[1], imshape[0])
-    perspective_img = cv2.warpPerspective(image, M, img_size, flags=cv2.INTER_LINEAR)
+    warped = cv2.warpPerspective(image, M, img_size, flags=cv2.INTER_LINEAR)
 
-    return perspective_img
+    return warped
 
 
 def process_image(image, mtx, dist):

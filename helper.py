@@ -156,6 +156,42 @@ def region_of_interest(img, vertices):
     return masked_image
 
 
+def perspective_transform(image):
+    imshape = image.shape
+
+    x_left_bottom_src  = imshape[1] * 0.14
+    x_left_top_src     = imshape[1] * 0.458
+    x_right_top_src    = imshape[1] * 0.542
+    x_right_bottom_src = imshape[1] * 0.88
+
+    y_top_src          = imshape[0] * 0.63
+    y_bottom_src       = imshape[0]
+
+    src = np.float32([[(x_left_bottom_src, y_bottom_src),
+                          (x_left_top_src, y_top_src),
+                          (x_right_top_src, y_top_src),
+                          (x_right_bottom_src, y_bottom_src)]])
+
+    x_left_bottom_dst  = imshape[1] * 0.25
+    x_left_top_dst     = x_left_bottom_dst
+    x_right_top_dst    = imshape[1] * 0.75
+    x_right_bottom_dst = x_right_top_dst
+
+    y_top_dst          = 0
+    y_bottom_dst       = imshape[0]
+
+    dst = np.float32([[(x_left_bottom_dst, y_bottom_dst),
+                          (x_left_top_dst, y_top_dst),
+                          (x_right_top_dst, y_top_dst),
+                          (x_right_bottom_dst, y_bottom_dst)]])
+
+    M = cv2.getPerspectiveTransform(src, dst)
+    img_size = (imshape[1], imshape[0])
+    perspective_img = cv2.warpPerspective(image, M, img_size, flags=cv2.INTER_LINEAR)
+
+    return perspective_img
+
+
 def process_image(image, mtx, dist):
     """Process image to identify the lane boundaries.
 

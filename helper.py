@@ -3,31 +3,20 @@ import numpy as np
 from moviepy.editor import VideoFileClip
 
 
-def get_images(files):
-    """Read images using OpenCV from given a list of files.
-
-    :param files: A list of image file name.
-
-    :return: A list of opencv image array.
-    """
-    images = []
-
-    for f in files:
-        image = cv2.imread(f)
-        images.append(image)
-
-    return images
-
-
-def get_calibration_info(images, nx, ny):
+def get_calibration_info(image_path, nx, ny):
     """Find camera matrix and distortion coefficients to undistort image.
 
-    :param images: A list of opencv image array.
+    :param image_path: The path of chessboard images.
     :param nx: The number of corners in row.
     :param ny: The number of corners in column.
 
     :return: A tuple of camera matrix and distortion coefficients.
     """
+    images = []
+    for f in glob.glob(image_path + '/*.jpg'):
+        image = cv2.imread(f)
+        images.append(image)
+
     objpoints = []  # 3D points in real world space
     imgpoints = []  # 2D points in image plane
 

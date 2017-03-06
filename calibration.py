@@ -24,7 +24,7 @@ def get_calibration_info(image_path, nx, ny):
     objp[:, :2] = np.mgrid[0:nx, 0:ny].T.reshape(-1, 2)
 
     for img in images:
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
         ret, corners = cv2.findChessboardCorners(gray, (nx, ny), None)
 
         if ret:

@@ -12,7 +12,7 @@ def abs_sobel_thresh(image, orient='x', ksize=3, thresh=(0, 255)):
 
     :return: Directional graident binary image.
     """
-    gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
 
     if orient == 'x':
         sobel = cv2.Sobel(gray, cv2.CV_64F, 1, 0, ksize=ksize)

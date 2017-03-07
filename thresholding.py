@@ -64,3 +64,19 @@ def dir_threshold(image, sobel_kernel=3, thresh=(0, np.pi/2)):
     dir_binary = np.zeros_like(absgraddir)
     dir_binary[(absgraddir >= thresh[0]) & (absgraddir <= thresh[1])] = 1
     return dir_binary
+
+
+def s_thresh(image, thresh=(0, 255)):
+    """Generate S channel binary image in HLS.
+
+    :param image: An image to generate binary image.
+    :param thresh: Low and high threshold.
+
+    :return: S channel binary image in HLS.
+    """
+    hls = cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
+    s = hls[:, :, 2]
+
+    s_binary = np.zeros_like(s)
+    s_binary[(s > thresh[0]) & (s <= thresh[1])] = 1
+    return s_binary

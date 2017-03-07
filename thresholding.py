@@ -66,6 +66,19 @@ def dir_thresh(image, ksize=3, thresh=(0, np.pi/2)):
     return dir_binary
 
 
+def ch_thresh(ch, thresh=(0, 255)):
+    """Generate a channel binary image.
+
+    :param ch: A color channel to generate binary image.
+    :param thresh: Low and high threshold.
+
+    :return: A channel binary image.
+    """
+    ch_binary = np.zeros_like(ch)
+    ch_binary[(ch > thresh[0]) & (ch <= thresh[1])] = 1
+    return ch_binary
+
+
 def s_thresh(image, thresh=(0, 255)):
     """Generate S channel binary image in HLS.
 

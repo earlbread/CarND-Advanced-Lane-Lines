@@ -120,3 +120,20 @@ def grad_combine(image):
     combined[(gradx == 1)]= 1
 
     return combined
+
+
+def thresh_combine(image):
+    """Generate a combined binary image of gradient and color.
+
+    :param image: An image to generate binary image.
+
+    :return: A binary image.
+    """
+
+    color = color_combine(image)
+    grad = grad_combine(image)
+
+    combined = np.zeros_like(grad)
+    combined[(color == 1) | (grad == 1)] = 1
+
+    return combined

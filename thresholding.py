@@ -79,17 +79,19 @@ def ch_thresh(ch, thresh=(0, 255)):
     return ch_binary
 
 
-def s_thresh(image, thresh=(0, 255)):
-    """Generate S channel binary image in HLS.
+def color_combine(image):
+    """Generate a binary image using color thresholding.
 
     :param image: An image to generate binary image.
-    :param thresh: Low and high threshold.
 
-    :return: S channel binary image in HLS.
+    :return: A binary image.
     """
+
+    thresh = (180, 255)
     hls = cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
     s = hls[:, :, 2]
 
-    s_binary = np.zeros_like(s)
-    s_binary[(s > thresh[0]) & (s <= thresh[1])] = 1
-    return s_binary
+    combined = np.zeros_like(s)
+    combined[(s > thresh[0]) & (s <= thresh[1])] = 1
+
+    return combined

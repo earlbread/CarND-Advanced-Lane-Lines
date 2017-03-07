@@ -95,3 +95,28 @@ def color_combine(image):
     combined[(s > thresh[0]) & (s <= thresh[1])] = 1
 
     return combined
+
+
+def grad_combine(image):
+    """Generate a binary image using gradient thresholding.
+
+    :param image: An image to generate binary image.
+
+    :return: A binary image.
+    """
+
+    ksize = 15
+    thresh_gradx = (40, 120)
+    thresh_grady = (40, 120)
+    thresh_mag = (30, 100)
+    thresh_dir = (0.7, 1.3)
+
+    gradx = abs_sobel_thresh(image, orient='x', ksize=ksize, thresh=thresh_gradx)
+    grady = abs_sobel_thresh(image, orient='y', ksize=ksize, thresh=thresh_grady)
+    mag_binary = mag_thresh(image, ksize=ksize, thresh=thresh_mag)
+    dir_binary = dir_thresh(image, ksize=ksize, thresh=thresh_dir)
+
+    combined = np.zeros_like(gradx)
+    combined[(gradx == 1)]= 1
+
+    return combined

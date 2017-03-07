@@ -28,7 +28,7 @@ def abs_sobel_thresh(image, orient='x', ksize=3, thresh=(0, 255)):
     return grad_binary
 
 
-def mag_thresh(image, ksize=3, mag_thresh=(0, 255)):
+def mag_thresh(image, ksize=3, thresh=(0, 255)):
     """Generate the magnitude of the gradient.
 
     :param image: An image to generate binary image.
@@ -43,11 +43,11 @@ def mag_thresh(image, ksize=3, mag_thresh=(0, 255)):
     abs_sobelxy = np.sqrt(sobelx ** 2 + sobely ** 2)
     scaled_sobel = np.uint8(255*abs_sobelxy / np.max(abs_sobelxy))
     mag_binary = np.zeros_like(scaled_sobel)
-    mag_binary[(scaled_sobel >= mag_thresh[0]) & (scaled_sobel <= mag_thresh[1])] = 1
+    mag_binary[(scaled_sobel >= thresh[0]) & (scaled_sobel <= thresh[1])] = 1
     return mag_binary
 
 
-def dir_threshold(image, ksize=3, thresh=(0, np.pi/2)):
+def dir_thresh(image, ksize=3, thresh=(0, np.pi/2)):
     """Generate the direction of the gradient.
 
     :param image: An image to generate binary image.

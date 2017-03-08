@@ -87,7 +87,7 @@ def color_combine(image):
     :return: A binary image.
     """
 
-    thresh = (180, 255)
+    thresh = (130, 255)
     hls = cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
     s = hls[:, :, 2]
 

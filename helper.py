@@ -1,6 +1,12 @@
+import argparse
 import cv2
 import numpy as np
 from moviepy.editor import VideoFileClip
+
+import calibration as calib
+import thresholding
+import perspective
+import laneline
 
 
 def process_image(image, mtx, dist):
@@ -12,8 +18,12 @@ def process_image(image, mtx, dist):
 
     :return: A processed image.
     """
-    image = undistort_image(image, mtx, dist)
-    return image
+    image = calib.undistort_image(image, mtx, dist)
+    binary = thresholding.thresh_combine(image)
+    binary_warped = perspective.perspective_transform(binary)
+    detected = laneline.sliding_window(binary_warped)
+
+    return detected
 
 
 def process_video(video_filename, mtx, dist, prefix="precessed_"):
@@ -29,3 +39,18 @@ def process_video(video_filename, mtx, dist, prefix="precessed_"):
     new_clip = clip.fl_image(process_fl)
     new_filename = prefix + video_filename
     new_clip.write_videofile(new_filename)
+
+
+if __name__ == '__main__':
+    mtx, dist = calib.get_calibration_info('./camera_cal', 9, 6)
+    parser = argparse.ArgumentParser(description='Create processed video.')
+    parser.add_argument(
+        'video_filename',
+        type=str,
+        default='',
+        help='Path to video file.'
+    )
+    args = parser.parse_args()
+
+    video_filename = args.video_filename
+    process_video(video_filename, mtx, dist)

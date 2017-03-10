@@ -87,7 +87,7 @@ def color_combine(image):
     :return: A binary image.
     """
 
-    thresh = (130, 255)
+    thresh = (170, 255)
     hls = cv2.cvtColor(image, cv2.COLOR_RGB2HLS)
     s = hls[:, :, 2]
 
@@ -106,7 +106,7 @@ def grad_combine(image):
     """
 
     ksize = 15
-    thresh_gradx = (40, 120)
+    thresh_gradx = (20, 100)
     thresh_grady = (40, 120)
     thresh_mag = (30, 100)
     thresh_dir = (0.7, 1.3)

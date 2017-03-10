@@ -26,7 +26,7 @@ def process_image(image, mtx, dist):
     return detected
 
 
-def process_video(video_filename, mtx, dist, prefix="precessed_"):
+def process_video(video_filename, mtx, dist, prefix="processed_"):
     """Process video to identify the lane boundaries.
 
     :param video: Video file name to process.

@@ -21,7 +21,7 @@ def process_image(image, mtx, dist):
     image = calib.undistort_image(image, mtx, dist)
     binary = thresholding.thresh_combine(image)
     binary_warped = perspective.perspective_transform(binary)
-    detected, ploty, leftx, rightx, left_fitx, right_fitx = laneline.sliding_window(binary_warped)
+    detected, ploty, leftx, rightx, left_fitx, right_fitx, curvature = laneline.sliding_window(binary_warped)
     result = perspective.fill_laneline(image, binary_warped, ploty, left_fitx, right_fitx)
     return result
 

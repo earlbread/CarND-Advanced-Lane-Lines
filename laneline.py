@@ -129,4 +129,17 @@ def sliding_window(binary_warped):
 
     curvature = (left_curverad + right_curverad) / 2.0
 
-    return result, ploty, leftx, rightx, left_fitx, right_fitx, curvature
+    lane_centre = (left_fitx[-1] + right_fitx[-1])/2.0
+    camera_centre = result.shape[1]/2.0
+    dist_center = (lane_centre - camera_centre)*3.7/700
+
+    return result, ploty, leftx, rightx, left_fitx, right_fitx, curvature, dist_center
+
+
+def add_line_info(image, curvature, dist_center):
+    curvature_text = "Lane curvature : {:f}m".format(curvature)
+    dist_center_text = "Distance from center : {:f}m".format(dist_center)
+    cv2.putText(image, curvature_text, (30, 60), 50, 1.2, (255, 255, 255), 2)
+    cv2.putText(image, dist_center_text, (30, 90), 50, 1.2, (255, 255, 255), 2)
+
+    return image

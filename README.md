@@ -1,6 +1,8 @@
 
 # Advanced Lane Finding Project
 
+![Result GIF](output_images/result.gif)
+
 ## Introduction
 
 This is a advanced version of [Lane Finding Project][].
@@ -79,7 +81,7 @@ show_processed_image(origin1, undistorted1, processed_title='Undistorted Image')
 ```
 
 
-![png](output_9_0.png)
+![png](output_images/output_9_0.png)
 
 
 A sample raw image and corresponding undistorted image.
@@ -93,7 +95,7 @@ show_processed_image(origin2, undistorted2, processed_title='Undistorted Image')
 ```
 
 
-![png](output_11_0.png)
+![png](output_images/output_11_0.png)
 
 
 ### 2. Create thresholded image
@@ -112,7 +114,7 @@ show_processed_image(image, s_image, processed_title='Color binary')
 ```
 
 
-![png](output_15_0.png)
+![png](output_images/output_15_0.png)
 
 
 #### 2. Gradient thresholding
@@ -127,7 +129,7 @@ show_processed_image(image, s_image, processed_title='Grad binary')
 ```
 
 
-![png](output_17_0.png)
+![png](output_images/output_17_0.png)
 
 
 #### 3. Combining result
@@ -142,7 +144,7 @@ show_processed_image(image, s_image, processed_title='Combined binary')
 ```
 
 
-![png](output_19_0.png)
+![png](output_images/output_19_0.png)
 
 
 ### 3. Apply Perspective Transform
@@ -175,7 +177,7 @@ show_processed_image(image, warped, processed_title='Warped Image')
 ```
 
 
-![png](output_22_0.png)
+![png](output_images/output_22_0.png)
 
 
 
@@ -192,7 +194,7 @@ show_processed_image(thresholded, warped_thresholded, processed_title='Warped Im
 ```
 
 
-![png](output_23_0.png)
+![png](output_images/output_23_0.png)
 
 
 ### 4. Detect Lane Pixels
@@ -216,7 +218,7 @@ show_processed_image(image, detected, processed_title='Line Detected Image')
 ```
 
 
-![png](output_26_0.png)
+![png](output_images/output_26_0.png)
 
 
 ### 5. Warp back the detected lane boundaries and lane info
@@ -243,5 +245,14 @@ show_processed_image(image, result, processed_title='Final Image')
 ```
 
 
-![png](output_29_0.png)
+![png](output_images/output_29_0.png)
 
+## Result and Thoughts
+
+[![Result Video](http://img.youtube.com/vi/qh4Ee3G3TZk/0.jpg)](https://www.youtube.com/watch?v=qh4Ee3G3TZk)
+
+- My pipeline doesn't work well in challenge videos. To make the pipeline more robust, more parameter tuning is needed.
+
+- To make debugging easier, I need to make diagnosis video.
+
+- For an additional improvement, I need to implement outlier rejection and use a low-pass filter to smooth the lane detection over frames.

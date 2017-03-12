@@ -94,6 +94,22 @@ def color_combine(image):
     combined = np.zeros_like(s)
     combined[(s > thresh[0]) & (s <= thresh[1])] = 1
 
+    hsv = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
+
+    h = hsv[:, :, 0]
+    s = hsv[:, :, 1]
+    v = hsv[:, :, 2]
+
+    h_binary = ch_thresh(h, (100, 255))
+    v_binary = ch_thresh(v, (220, 255))
+    s_binary = ch_thresh(s, (150, 255))
+
+    yellow = cv2.inRange(hsv, (20, 50, 50), (50, 255, 255))
+    white = cv2.inRange(hsv, (0, 0, 180), (255, 25, 255))
+
+    combined = np.zeros_like(s_binary)
+    combined[((s_binary == 1) | (v_binary == 1) | (yellow > 0) | (white > 0)) & (h_binary == 0)] = 1
+
     return combined
 
 
@@ -104,20 +120,12 @@ def grad_combine(image):
 
     :return: A binary image.
     """
-
-    ksize = 15
-    thresh_gradx = (20, 100)
-    thresh_grady = (40, 120)
-    thresh_mag = (30, 100)
-    thresh_dir = (0.7, 1.3)
-
-    gradx = abs_sobel_thresh(image, orient='x', ksize=ksize, thresh=thresh_gradx)
-    grady = abs_sobel_thresh(image, orient='y', ksize=ksize, thresh=thresh_grady)
-    mag_binary = mag_thresh(image, ksize=ksize, thresh=thresh_mag)
-    dir_binary = dir_thresh(image, ksize=ksize, thresh=thresh_dir)
+    ksize = 9
+    gradx = abs_sobel_thresh(image, orient='x', ksize=ksize, thresh=(20, 255))
+    grady = abs_sobel_thresh(image, orient='y', ksize=ksize, thresh=(20, 255))
 
     combined = np.zeros_like(gradx)
-    combined[(gradx == 1)]= 1
+    combined[((gradx == 1) & (grady == 1))] = 1
 
     return combined
 

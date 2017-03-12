@@ -45,10 +45,10 @@ def perspective_transform(image):
                      (698, 453),
                      (1160, 720)]])
 
-    dst = np.float32([[(320, 720),
-                       (320, 0),
-                       (960, 0),
-                       (960, 720)]])
+    dst = np.float32([[(200, 720),
+                       (200, 0),
+                       (1080, 0),
+                       (1080, 720)]])
 
     M = cv2.getPerspectiveTransform(src, dst)
     img_size = (imshape[1], imshape[0])
@@ -67,10 +67,10 @@ def fill_laneline(image, binary_warped, ploty, left_fitx, right_fitx):
                      (698, 453),
                      (1160, 720)]])
 
-    dst = np.float32([[(320, 720),
-                       (320, 0),
-                       (960, 0),
-                       (960, 720)]])
+    dst = np.float32([[(200, 720),
+                       (200, 0),
+                       (1080, 0),
+                       (1080, 720)]])
 
     Minv = cv2.getPerspectiveTransform(dst, src)
 

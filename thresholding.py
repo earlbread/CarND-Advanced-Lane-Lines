@@ -104,11 +104,11 @@ def color_combine(image):
     v_binary = ch_thresh(v, (220, 255))
     s_binary = ch_thresh(s, (150, 255))
 
-    yellow = cv2.inRange(hsv, (20, 50, 50), (50, 255, 255))
-    white = cv2.inRange(hsv, (0, 0, 180), (255, 25, 255))
+    r = image[:, :, 0]
+    r_binary = ch_thresh(r, (205, 255))
 
     combined = np.zeros_like(s_binary)
-    combined[((s_binary == 1) | (v_binary == 1) | (yellow > 0) | (white > 0)) & (h_binary == 0)] = 1
+    combined[((s_binary == 1) | (v_binary == 1) | (r_binary == 1)) & (h_binary == 0)] = 1
 
     return combined
 

@@ -230,6 +230,9 @@ The last step is drawing lane boundaries to original image.
 import laneline
 import perspective
 
+prev_left = None
+prev_right = None
+
 image = mpimg.imread('./test_images/test5.jpg')
 image = calib.undistort_image(image, mtx, dist)
 
@@ -238,7 +241,7 @@ binary_warped = perspective.perspective_transform(binary)
 
 detected, ploty, leftx, rightx, left_fitx, right_fitx, curvature, dist_center = laneline.sliding_window(binary_warped)
 
-mapped_lane = perspective.fill_laneline(image, binary_warped, ploty, left_fitx, right_fitx)
+mapped_lane, prev_left, prev_right = perspective.fill_laneline(image, binary_warped, ploty, left_fitx, right_fitx, prev_left, prev_right)
 result = laneline.add_line_info(mapped_lane, curvature, dist_center)
 
 show_processed_image(image, result, processed_title='Final Image')
@@ -249,7 +252,7 @@ show_processed_image(image, result, processed_title='Final Image')
 
 ## Result and Thoughts
 
-[![Result Video](http://img.youtube.com/vi/qh4Ee3G3TZk/0.jpg)](https://www.youtube.com/watch?v=qh4Ee3G3TZk)
+[![Result Video](http://img.youtube.com/vi/qhv-Vaw1V64/0.jpg)](https://www.youtube.com/watch?v=qhv-Vaw1V64)
 
 - My pipeline doesn't work well in challenge videos. To make the pipeline more robust, more parameter tuning is needed.
 

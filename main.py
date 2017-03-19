@@ -44,7 +44,7 @@ def process_video(video_filename, mtx, dist, prefix="processed_"):
     clip = VideoFileClip(video_filename)
     new_clip = clip.fl_image(process_fl)
     new_filename = prefix + video_filename
-    new_clip.write_videofile(new_filename)
+    new_clip.write_videofile(new_filename, audio=False)
 
 
 if __name__ == '__main__':

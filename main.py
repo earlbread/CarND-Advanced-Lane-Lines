@@ -8,6 +8,8 @@ import thresholding
 import perspective
 import laneline
 
+prev_left = None
+prev_right = None
 
 def process_image(image, mtx, dist):
     """Process image to identify the lane boundaries.
@@ -18,11 +20,14 @@ def process_image(image, mtx, dist):
 
     :return: A processed image.
     """
+    global prev_left
+    global prev_right
+
     image = calib.undistort_image(image, mtx, dist)
     binary = thresholding.thresh_combine(image)
     binary_warped = perspective.perspective_transform(binary)
     detected, ploty, leftx, rightx, left_fitx, right_fitx, curvature, dist_center = laneline.sliding_window(binary_warped)
-    mapped_lane = perspective.fill_laneline(image, binary_warped, ploty, left_fitx, right_fitx)
+    mapped_lane, prev_left, prev_right = perspective.fill_laneline(image, binary_warped, ploty, left_fitx, right_fitx, prev_left, prev_right)
     result = laneline.add_line_info(mapped_lane, curvature, dist_center)
     return result
 

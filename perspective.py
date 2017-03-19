@@ -57,7 +57,13 @@ def perspective_transform(image):
     return warped
 
 
-def fill_laneline(image, binary_warped, ploty, left_fitx, right_fitx):
+def first_order_filter(prev_pts, next_pts):
+    ALPHA  = 0.2
+    next_pts = prev_pts * (1 - ALPHA) + next_pts * ALPHA
+    return next_pts
+
+
+def fill_laneline(image, binary_warped, ploty, left_fitx, right_fitx, prev_left, prev_right):
     # Create an image to draw the lines on
     warp_zero = np.zeros_like(binary_warped).astype(np.uint8)
     color_warp = np.dstack((warp_zero, warp_zero, warp_zero))
@@ -74,10 +80,30 @@ def fill_laneline(image, binary_warped, ploty, left_fitx, right_fitx):
 
     Minv = cv2.getPerspectiveTransform(dst, src)
 
-
     # Recast the x and y points into usable format for cv2.fillPoly()
     pts_left = np.array([np.transpose(np.vstack([left_fitx, ploty]))])
+    if prev_left is not None:
+        if np.absolute(np.average(prev_left - pts_left)) < 50:
+            pts_left = first_order_filter(prev_left, pts_left)
+        else:
+            pts_left = prev_left
+
     pts_right = np.array([np.flipud(np.transpose(np.vstack([right_fitx, ploty])))])
+    if prev_right is not None:
+        if np.absolute(np.average(prev_right - pts_right)) < 50:
+            pts_right = first_order_filter(prev_right, pts_right)
+        else:
+            pts_right = prev_right
+
+    if (prev_left is not None and
+        prev_right is not None and
+        not 200 < np.absolute(np.average(pts_left - pts_right)) < 600):
+        pts_left = prev_left
+        pts_right = prev_right
+
+    prev_left = pts_left
+    prev_right = pts_right
+
     pts = np.hstack((pts_left, pts_right))
 
     # Draw the lane onto the warped blank image
@@ -88,4 +114,4 @@ def fill_laneline(image, binary_warped, ploty, left_fitx, right_fitx):
     # Combine the result with the original image
     result = cv2.addWeighted(image, 1, newwarp, 0.3, 0)
 
-    return result
+    return result, prev_left, prev_right
